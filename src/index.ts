@@ -55,6 +55,7 @@ const typeDefs = gql`
     capture_rate: Int
     habitat: Habitat
     is_baby: Boolean
+    sprites: Sprites
   }
 
   type Habitat {

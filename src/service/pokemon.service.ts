@@ -1,4 +1,4 @@
-import { Images, Pokemon } from "../models/pokemon/pokemon.entity";
+import { Images, Pokemon } from "../models/pokemon/pokemon.entities";
 import { PokemonRepository } from "../repository/pokemon.repository";
 
 export class PokemonService {
@@ -8,7 +8,7 @@ export class PokemonService {
     }
 
     static async getManyPokemons(offset: number, limit: number): Promise<Pokemon[]> {
-        return await PokemonRepository.getPokemons(offset, limit);
+        return await PokemonRepository.getManyPokemons(offset, limit);
     }
    
     static async getPokemonImages(id: string): Promise<Images> {

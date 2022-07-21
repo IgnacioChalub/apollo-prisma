@@ -1,4 +1,4 @@
-import { Images, Pokemon } from "../models/pokemon/pokemon.entity";
+import { Images, Pokemon } from "../models/pokemon/pokemon.entities";
 import { JwtService } from "../repository/jwt.service";
 import { PokemonService } from "../service/pokemon.service";
 
@@ -13,7 +13,6 @@ export class PokemonController {
         JwtService.validateToken(context.token);
         return await PokemonService.getManyPokemons(args.input.offset, args.input.limit);
     }
-
 
     static async getPokemonImages(_parent: any, args: any, context: any, _info: any): Promise<Images> {
         JwtService.validateToken(context.token);

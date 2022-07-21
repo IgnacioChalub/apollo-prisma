@@ -6,6 +6,7 @@ export class Pokemon {
     capture_rate: number;
     habitat: Habitat;
     is_baby: boolean;
+    sprites: Sprites;   
 }
 
 class Habitat {
@@ -18,9 +19,16 @@ export class Images {
     sprites: Sprites
 } 
 
-class Sprites {
+export class Sprites {
+
     back_default: string;
     front_default: string;
+
+    constructor(back_default: string, front_default: string) {
+        this.back_default = back_default;
+        this.front_default = front_default;
+    } 
+
 }
 
 
