@@ -1,18 +1,28 @@
 import axios from "axios";
-import { Images, Pokemon, Sprites} from "../models/pokemon/pokemon.entities";
+import { Images, Item, Pokemon, Sprites} from "../models/pokemon/pokemon.entities";
 
 export class PokemonRepository {
+
+    static async pokemonExists(id: string): Promise<boolean> {
+        const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
+        return await axios.get(url)
+        .then(() => {
+            return true;
+        }).catch( () => {
+            return false;
+        })
+    }
 
     static async getPokemon(id: string): Promise<Pokemon> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
         const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
        
-        const pokemon = <Pokemon><unknown>response.data;
+        const pokemon = response.data;
 
         const images = await PokemonRepository.getPokemonImages(id);
         pokemon["sprites"] = new Sprites(images.sprites.back_default, images.sprites.front_default);
 
-        return pokemon;
+        return <Pokemon><unknown>pokemon;
     }
 
     static async getManyPokemons(offset: number, limit: number): Promise<Pokemon[]> {
@@ -21,16 +31,52 @@ export class PokemonRepository {
 
         const pokemons = []
         for (const element of response.data.results) {
-            const pokemon = PokemonRepository.getPokemon(element.url.charAt(element.url.length-2));
+            const pokemon = PokemonRepository.getPokemon(PokemonRepository.getIdFromUrl(element.url));
             pokemons.push(pokemon);    
         }
 
         return pokemons; 
     }
 
+    private static getIdFromUrl(url: string): string {
+        let pos = url.length-2;
+        let char = url[pos];
+        let id = ""
+        while(char != '/'){
+            id = char + id;
+            pos = pos - 1;
+            char = url[pos];
+        }
+        return id;
+    }
+
+
     static async getPokemonImages(id: string): Promise<Images> {
         const url = "https://pokeapi.co/api/v2/pokemon/" + id + "";  
         const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
         return <Images><unknown>response.data;
     }
+
+    static async getItem(id: string): Promise<Item> {
+        const url = "https://pokeapi.co/api/v2/item/" + id + "";
+        const response = await axios.get(url).catch( (error) => {throw new Error('Item not found')});
+
+        return <Item><unknown>response.data
+    }
+
+    static async getManyItems(offset: number, limit: number): Promise<Item[]> {
+        const url = "https://pokeapi.co/api/v2/item/?offset=" + offset + "&limit=" + limit + "";  
+        const response = await axios.get(url);
+        const results = response.data.results;
+
+        const items = [];
+
+        for (const result of results) {
+            const id = PokemonRepository.getIdFromUrl(result.url);
+            items.push(await PokemonRepository.getItem(id));
+        }
+        return items;
+    }
+
+
 }

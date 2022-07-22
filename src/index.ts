@@ -7,13 +7,17 @@ const typeDefs = gql`
   type Query {
     getUser: User
     getPokemon(input: GetPokemonInput): Pokemon
-    getManyPokemons(input: GetManyPokemonsInput): [Pokemon]
+    getManyPokemons(input: GetManyInput): [Pokemon]
     getPokemonImages(input: GetPokemonInput): Images
+    getItem(input: GetItem): Item
+    getManyItems(input: GetManyInput): [Item]
+    getAllFavorites: [FavoritePokemon]
   }
 
   type Mutation {
     createUser(input: CreateUserInput): User
     logInUser(input: LogInUserInput): LogInUserResponse
+    addFavoritePokemon(input: AddFavoritePokemonInput): String
   }
 
   input CreateUserInput {
@@ -38,13 +42,38 @@ const typeDefs = gql`
     email: String
   }
 
-  input GetPokemonInput {
-    id: Int
+  type FavoritePokemon {
+    id: String
+    favoritePokemonId: String
   }
 
-  input GetManyPokemonsInput {
+  input GetPokemonInput {
+    id: String
+  }
+
+  input GetManyInput {
     offset: Int!
     limit: Int!
+  }
+
+  input GetItem {
+    id: String!
+  }
+
+  input AddFavoritePokemonInput {
+    id: String!
+  }
+
+  type Item {
+    id: String
+    name: String
+    cost: Int
+    fling_power: Int
+    sprites: ItemSprites
+  }
+
+  type ItemSprites {
+    default: String
   }
 
   type Pokemon {
@@ -79,20 +108,30 @@ const createUser = UserController.create;
 const getUser = UserController.getUser;
 const logInUser = UserController.logIn;
 
+const addFavoritePokemon = UserController.addFavoritePokemon;
+const getAllFavorites = UserController.getAllFavorites;
+
 const getPokemon = PokemonController.getPokemon;
 const getManyPokemons = PokemonController.getManyPokemons;
 const getPokemonImages = PokemonController.getPokemonImages;
+
+const getItem = PokemonController.getItem;
+const getManyItems = PokemonController.getManyItems;
 
 const resolvers = {
     Query: {
         getUser,
         getPokemon,
         getManyPokemons,
-        getPokemonImages
+        getPokemonImages,
+        getItem,
+        getManyItems,
+        getAllFavorites
     },
     Mutation: {
         logInUser,
-        createUser
+        createUser,
+        addFavoritePokemon
     }
   };
 

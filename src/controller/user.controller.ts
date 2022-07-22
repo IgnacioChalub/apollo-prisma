@@ -1,3 +1,4 @@
+import { FavoritePokemon } from "@prisma/client";
 import { validateOrReject } from "class-validator";
 import { CreateUserDto } from "../models/user/createUser.dto";
 import { User } from "../models/user/user.entity";
@@ -21,6 +22,16 @@ export class UserController {
     static async getUser(_parent: any, _args: any, context: any, _info: any): Promise<User> {
         const id = JwtService.validateToken(context.token);
         return await UserService.getUser(id);
+    }
+
+    static async addFavoritePokemon(_parent: any, args: any, context: any, _info: any): Promise<string> {
+        const id = JwtService.validateToken(context.token);
+        return await UserService.addFavoritePokemon(id, args.input.id)
+    }
+
+    static async getAllFavorites(_parent: any, _args: any, context: any, _info: any): Promise<FavoritePokemon[]> {
+        const id = JwtService.validateToken(context.token);
+        return await UserService.getAllFavorites(id);
     }
 
 }

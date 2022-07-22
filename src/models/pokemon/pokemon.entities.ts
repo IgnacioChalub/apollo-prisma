@@ -31,4 +31,14 @@ export class Sprites {
 
 }
 
+export class Item {
+    id: string;
+    name: string;
+    cost: number;
+    fling_power: number;
+    sprites: ItemSprite;
+}
 
+class ItemSprite {
+    defalut: string;
+}

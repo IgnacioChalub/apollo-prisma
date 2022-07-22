@@ -1,6 +1,8 @@
+import { FavoritePokemon } from "@prisma/client";
 import { CreateUserDto } from "../models/user/createUser.dto";
 import { User } from "../models/user/user.entity";
 import { JwtService } from "../repository/jwt.service";
+import { PokemonRepository } from "../repository/pokemon.repository";
 import { UserRepository } from "../repository/user.repository";
 
 export class UserService {
@@ -24,6 +26,15 @@ export class UserService {
 
     static async getUser(id: string): Promise<User> {
         return await UserRepository.find(id);
+    }
+
+    static async addFavoritePokemon(id: string, pokemonId: string): Promise<string> {
+        if(! await PokemonRepository.pokemonExists(pokemonId)) throw new Error("Pokemon not found");
+        return await UserRepository.addFavoritePokemon(id,  pokemonId);
+    }
+
+    static async getAllFavorites(id: string): Promise<FavoritePokemon[]> {
+        return await UserRepository.getAllFavorites(id);
     }
 
 }
