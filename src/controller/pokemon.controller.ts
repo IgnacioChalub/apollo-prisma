@@ -9,9 +9,19 @@ export class PokemonController {
         return await PokemonService.getPokemon(args.input.id)
     }
 
+    static async getPokemonWithImages(_parent: any, args: any, context: any, _info: any): Promise<Pokemon> {
+        JwtService.validateToken(context.token);
+        return await PokemonService.getPokemonWithImages(args.input.id)
+    }
+
     static async getManyPokemons(_parent: any, args: any, context: any, _info: any): Promise<Pokemon[]> {
         JwtService.validateToken(context.token);
         return await PokemonService.getManyPokemons(args.input.offset, args.input.limit);
+    }
+
+    static async getManyPokemonsWithImages(_parent: any, args: any, context: any, _info: any): Promise<Pokemon[]> {
+        JwtService.validateToken(context.token);
+        return await PokemonService.getManyPokemonsWithImages(args.input.offset, args.input.limit);
     }
 
     static async getPokemonImages(_parent: any, args: any, context: any, _info: any): Promise<Images> {

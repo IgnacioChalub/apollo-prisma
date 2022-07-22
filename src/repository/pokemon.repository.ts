@@ -16,6 +16,12 @@ export class PokemonRepository {
     static async getPokemon(id: string): Promise<Pokemon> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
         const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
+        return <Pokemon><unknown>response.data;
+    }
+
+    static async getPokemonWithImages(id: string): Promise<Pokemon> {
+        const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
+        const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
        
         const pokemon = response.data;
 
@@ -32,6 +38,19 @@ export class PokemonRepository {
         const pokemons = []
         for (const element of response.data.results) {
             const pokemon = PokemonRepository.getPokemon(PokemonRepository.getIdFromUrl(element.url));
+            pokemons.push(pokemon);    
+        }
+
+        return pokemons; 
+    }
+
+    static async getManyPokemonsWithImages(offset: number, limit: number): Promise<Pokemon[]> {
+        const url = "https://pokeapi.co/api/v2/pokemon-species/?offset=" + offset + "&limit=" + limit + "";  
+        const response = await axios.get(url);
+
+        const pokemons = []
+        for (const element of response.data.results) {
+            const pokemon = PokemonRepository.getPokemonWithImages(PokemonRepository.getIdFromUrl(element.url));
             pokemons.push(pokemon);    
         }
 

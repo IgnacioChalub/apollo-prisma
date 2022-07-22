@@ -7,7 +7,9 @@ const typeDefs = gql`
   type Query {
     getUser: User
     getPokemon(input: GetPokemonInput): Pokemon
+    getPokemonWithImages(input: GetPokemonInput): PokemonWithImages
     getManyPokemons(input: GetManyInput): [Pokemon]
+    getManyPokemonsWithImages(input: GetManyInput): [PokemonWithImages]
     getPokemonImages(input: GetPokemonInput): Images
     getItem(input: GetItem): Item
     getManyItems(input: GetManyInput): [Item]
@@ -84,6 +86,16 @@ const typeDefs = gql`
     capture_rate: Int
     habitat: Habitat
     is_baby: Boolean
+  }
+
+  type PokemonWithImages {
+    id: String
+    name: String
+    is_legendary: Boolean
+    is_mythical: Boolean
+    capture_rate: Int
+    habitat: Habitat
+    is_baby: Boolean
     sprites: Sprites
   }
 
@@ -113,6 +125,8 @@ const getAllFavorites = UserController.getAllFavorites;
 
 const getPokemon = PokemonController.getPokemon;
 const getManyPokemons = PokemonController.getManyPokemons;
+const getPokemonWithImages = PokemonController.getPokemonWithImages;
+const getManyPokemonsWithImages = PokemonController.getManyPokemonsWithImages;
 const getPokemonImages = PokemonController.getPokemonImages;
 
 const getItem = PokemonController.getItem;
@@ -122,7 +136,9 @@ const resolvers = {
     Query: {
         getUser,
         getPokemon,
+        getPokemonWithImages,
         getManyPokemons,
+        getManyPokemonsWithImages,
         getPokemonImages,
         getItem,
         getManyItems,

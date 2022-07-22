@@ -7,15 +7,22 @@ export class PokemonService {
         return await PokemonRepository.getPokemon(id);
     }
 
+    static async getPokemonWithImages(id: string): Promise<Pokemon> {
+        return await PokemonRepository.getPokemonWithImages(id);
+    }
+    
     static async getManyPokemons(offset: number, limit: number): Promise<Pokemon[]> {
         return await PokemonRepository.getManyPokemons(offset, limit);
+    }
+    
+    static async getManyPokemonsWithImages(offset: number, limit: number): Promise<Pokemon[]> {
+        return await PokemonRepository.getManyPokemonsWithImages(offset, limit);
     }
    
     static async getPokemonImages(id: string): Promise<Images> {
         return await PokemonRepository.getPokemonImages(id);
     }
     
-
     static async getItem(id: string): Promise<Item> {
         return await PokemonRepository.getItem(id);
     }
