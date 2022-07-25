@@ -1,7 +1,8 @@
 import axios from "axios";
-import { Images, Item, Pokemon, Sprites} from "../models/pokemon/pokemon.entities";
+import { Images, Item, ItemIdentifiers, Pokemon, PokemonIdentifiers, Sprites} from "../models/pokemon/pokemon.entities";
 
 export class PokemonRepository {
+    
 
     static async pokemonExists(id: string): Promise<boolean> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
@@ -13,6 +14,19 @@ export class PokemonRepository {
         })
     }
 
+    static async getPokemonsList(offset: number, limit: number): Promise<PokemonIdentifiers[]> {
+        const url = "https://pokeapi.co/api/v2/pokemon-species/?offset=" + offset + "&limit=" + limit + "";  
+        const response = await axios.get(url);
+
+        const pokemonList = []
+        for (const element of response.data.results) {
+            pokemonList.push(new PokemonIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url)));
+        }
+
+        return pokemonList;
+    }
+
+    
     static async getPokemon(id: string): Promise<Pokemon> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
         const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
@@ -69,11 +83,23 @@ export class PokemonRepository {
         return id;
     }
 
-
     static async getPokemonImages(id: string): Promise<Images> {
         const url = "https://pokeapi.co/api/v2/pokemon/" + id + "";  
         const response = await axios.get(url).catch( (error) => {throw new Error('Pokemon not found')});
         return <Images><unknown>response.data;
+    }
+
+    static async getItemsList(offset: number, limit: number): Promise<ItemIdentifiers[]>{
+        const url = "https://pokeapi.co/api/v2/item/?offset=" + offset + "&limit=" + limit + "";  
+        const response = await axios.get(url);
+
+        const itemsIdentifiers = [];
+
+        for (const element of response.data.results) {
+            itemsIdentifiers.push(new ItemIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url)));
+        }
+        return itemsIdentifiers;
+
     }
 
     static async getItem(id: string): Promise<Item> {

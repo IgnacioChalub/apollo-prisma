@@ -1,7 +1,11 @@
-import { Images, Item, Pokemon } from "../models/pokemon/pokemon.entities";
+import { Images, Item, ItemIdentifiers, Pokemon, PokemonIdentifiers } from "../models/pokemon/pokemon.entities";
 import { PokemonRepository } from "../repository/pokemon.repository";
 
 export class PokemonService {
+
+    static async getPokemonsList(offset: number, limit: number): Promise<PokemonIdentifiers[]> {
+        return await PokemonRepository.getPokemonsList(offset, limit);
+    }
 
     static async getPokemon(id: string): Promise<Pokemon> {
         return await PokemonRepository.getPokemon(id);
@@ -23,6 +27,10 @@ export class PokemonService {
         return await PokemonRepository.getPokemonImages(id);
     }
     
+    static async getItemsList(offset: number, limit: number): Promise<ItemIdentifiers[]> {
+        return await PokemonRepository.getItemsList(offset, limit);
+    }
+
     static async getItem(id: string): Promise<Item> {
         return await PokemonRepository.getItem(id);
     }

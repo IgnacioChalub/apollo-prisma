@@ -6,11 +6,13 @@ const typeDefs = gql`
 
   type Query {
     getUser: User
+    getPokemonsList(input: GetManyInput): [PokemonIdentifiers]
     getPokemon(input: GetPokemonInput): Pokemon
     getPokemonWithImages(input: GetPokemonInput): PokemonWithImages
     getManyPokemons(input: GetManyInput): [Pokemon]
     getManyPokemonsWithImages(input: GetManyInput): [PokemonWithImages]
     getPokemonImages(input: GetPokemonInput): Images
+    getItemsList(input: GetManyInput): [ItemsIdentifiers]
     getItem(input: GetItem): Item
     getManyItems(input: GetManyInput): [Item]
     getAllFavorites: [FavoritePokemon]
@@ -66,6 +68,11 @@ const typeDefs = gql`
     id: String!
   }
 
+  type ItemsIdentifiers {
+    name: String
+    id: String
+  }
+
   type Item {
     id: String
     name: String
@@ -76,6 +83,11 @@ const typeDefs = gql`
 
   type ItemSprites {
     default: String
+  }
+
+  type PokemonIdentifiers {
+    name: String
+    id: String
   }
 
   type Pokemon {
@@ -123,23 +135,27 @@ const logInUser = UserController.logIn;
 const addFavoritePokemon = UserController.addFavoritePokemon;
 const getAllFavorites = UserController.getAllFavorites;
 
+const getPokemonsList = PokemonController.getPokemonsList;
 const getPokemon = PokemonController.getPokemon;
 const getManyPokemons = PokemonController.getManyPokemons;
 const getPokemonWithImages = PokemonController.getPokemonWithImages;
 const getManyPokemonsWithImages = PokemonController.getManyPokemonsWithImages;
 const getPokemonImages = PokemonController.getPokemonImages;
 
+const getItemsList = PokemonController.getItemsList;
 const getItem = PokemonController.getItem;
 const getManyItems = PokemonController.getManyItems;
 
 const resolvers = {
     Query: {
         getUser,
+        getPokemonsList,
         getPokemon,
         getPokemonWithImages,
         getManyPokemons,
         getManyPokemonsWithImages,
         getPokemonImages,
+        getItemsList,
         getItem,
         getManyItems,
         getAllFavorites

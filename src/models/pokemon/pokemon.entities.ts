@@ -42,3 +42,23 @@ export class Item {
 class ItemSprite {
     defalut: string;
 }
+
+export class PokemonIdentifiers {
+    name: string;
+    id: string;
+
+    constructor(name: string, id: string) {
+        this.name = name;
+        this.id = id;
+    } 
+}
+
+export class ItemIdentifiers {
+    name: string;
+    id: string;
+
+    constructor(name: string, id: string) {
+        this.name = name;
+        this.id = id;
+    } 
+}
