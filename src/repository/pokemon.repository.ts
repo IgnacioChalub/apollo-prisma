@@ -3,27 +3,24 @@ import { Images, Item, ItemIdentifiers, Location, LocationName, Pokemon, Pokemon
 
 export class PokemonRepository {
     
-
     static async pokemonExists(id: string): Promise<boolean> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/" + id + "";  
-        return await axios.get(url)
-        .then(() => {
+        try{
+            await axios.get(url)
             return true;
-        }).catch( () => {
+        }catch(e: any){
             return false;
-        })
+        }
     }
 
     static async getPokemonsList(offset: number, limit: number): Promise<PokemonIdentifiers[]> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/?offset=" + offset + "&limit=" + limit + "";  
         const response = await axios.get(url);
 
-        const pokemonList = []
-        for (const element of response.data.results) {
-            pokemonList.push(new PokemonIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url)));
-        }
-
-        return pokemonList;
+        return response.data.results.map((element: { name: string; url: string; }) => {
+            return new PokemonIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url));
+        })
+        
     }
 
     
@@ -48,27 +45,17 @@ export class PokemonRepository {
     static async getManyPokemons(offset: number, limit: number): Promise<Pokemon[]> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/?offset=" + offset + "&limit=" + limit + "";  
         const response = await axios.get(url);
-
-        const pokemons = []
-        for (const element of response.data.results) {
-            const pokemon = PokemonRepository.getPokemon(PokemonRepository.getIdFromUrl(element.url));
-            pokemons.push(pokemon);    
-        }
-
-        return pokemons; 
+        return response.data.results.map((element: { url: string; }) => {
+            return PokemonRepository.getPokemon(PokemonRepository.getIdFromUrl(element.url));
+        })
     }
 
     static async getManyPokemonsWithImages(offset: number, limit: number): Promise<Pokemon[]> {
         const url = "https://pokeapi.co/api/v2/pokemon-species/?offset=" + offset + "&limit=" + limit + "";  
         const response = await axios.get(url);
-
-        const pokemons = []
-        for (const element of response.data.results) {
-            const pokemon = PokemonRepository.getPokemonWithImages(PokemonRepository.getIdFromUrl(element.url));
-            pokemons.push(pokemon);    
-        }
-
-        return pokemons; 
+        return response.data.results.map((element: { url: string; }) => {
+            return PokemonRepository.getPokemonWithImages(PokemonRepository.getIdFromUrl(element.url));    
+        })
     }
 
     private static getIdFromUrl(url: string): string {
@@ -92,35 +79,23 @@ export class PokemonRepository {
     static async getItemsList(offset: number, limit: number): Promise<ItemIdentifiers[]>{
         const url = "https://pokeapi.co/api/v2/item/?offset=" + offset + "&limit=" + limit + "";  
         const response = await axios.get(url);
-
-        const itemsIdentifiers = [];
-
-        for (const element of response.data.results) {
-            itemsIdentifiers.push(new ItemIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url)));
-        }
-        return itemsIdentifiers;
-
+        return response.data.results.map(element => {
+            return new ItemIdentifiers(element.name, PokemonRepository.getIdFromUrl(element.url));
+        })
     }
 
     static async getItem(id: string): Promise<Item> {
         const url = "https://pokeapi.co/api/v2/item/" + id + "";
         const response = await axios.get(url).catch( (error) => {throw new Error('Item not found')});
-
         return <Item><unknown>response.data
     }
 
     static async getManyItems(offset: number, limit: number): Promise<Item[]> {
         const url = "https://pokeapi.co/api/v2/item/?offset=" + offset + "&limit=" + limit + "";  
         const response = await axios.get(url);
-        const results = response.data.results;
-
-        const items = [];
-
-        for (const result of results) {
-            const id = PokemonRepository.getIdFromUrl(result.url);
-            items.push(await PokemonRepository.getItem(id));
-        }
-        return items;
+        return response.data.results.map(async (result: { url: string; }) => {
+            return await PokemonRepository.getItem(PokemonRepository.getIdFromUrl(result.url))
+        })
     }
 
     static async getRegionsList(): Promise<RegionName[]> {

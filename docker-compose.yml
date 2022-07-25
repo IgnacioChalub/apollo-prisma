@@ -1,12 +1,14 @@
 services:
   api:
-    build: .
+    container_name: pokeapi
+    image: ignaciochalub/pokeapi-graphql
     ports: 
       - 4000:4000
     env_file: .env
     depends_on:
       - database
   database:
+    container_name: database
     image: postgres:14.1-alpine
     restart: always
     environment:
