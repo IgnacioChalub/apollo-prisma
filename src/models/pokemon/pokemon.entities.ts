@@ -62,3 +62,18 @@ export class ItemIdentifiers {
         this.id = id;
     } 
 }
+
+
+export class Location {
+    name: String
+
+}
+
+export class RegionName {
+    name: string;
+}
+
+export class LocationName {
+    name: string;
+    areas: string[]
+}

@@ -1,4 +1,4 @@
-import { Images, Item, ItemIdentifiers, Pokemon, PokemonIdentifiers } from "../models/pokemon/pokemon.entities";
+import { Images, Item, ItemIdentifiers, Location, LocationName, Pokemon, PokemonIdentifiers, RegionName } from "../models/pokemon/pokemon.entities";
 import { PokemonRepository } from "../repository/pokemon.repository";
 
 export class PokemonService {
@@ -39,4 +39,15 @@ export class PokemonService {
         return await PokemonRepository.getManyItems(offset, limit);
     }
 
+    static async getRegionsList(): Promise<RegionName[]> {
+        return await PokemonRepository.getRegionsList();        
+    }
+
+    static async getRegionLocations(regionName: string): Promise<LocationName[]> {
+        return await PokemonRepository.getRegionLocations(regionName);
+    }
+
+    static async getLocation(locationName: string): Promise<Location> {
+        return await PokemonRepository.getLocation(locationName);
+    }
 }

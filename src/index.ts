@@ -16,6 +16,9 @@ const typeDefs = gql`
     getItem(input: GetItem): Item
     getManyItems(input: GetManyInput): [Item]
     getAllFavorites: [FavoritePokemon]
+    getRegionsList: [RegionName]
+    getRegionLocations(input: GetRegionLocationsInput): [LocationsName]
+    getLocation(input: GetLocationInput): Location
   }
 
   type Mutation {
@@ -66,6 +69,31 @@ const typeDefs = gql`
 
   input AddFavoritePokemonInput {
     id: String!
+  }
+
+  input GetRegionLocationsInput {
+    name: String
+  }
+
+  input GetLocationInput {
+    name: String
+  }
+
+  type Location {
+    name: String
+    areas: [Area]
+  }
+
+  type Area {
+    name: String
+  }
+
+  type RegionName {
+    name: String
+  }
+
+  type LocationsName {
+    name: String
   }
 
   type ItemsIdentifiers {
@@ -146,6 +174,10 @@ const getItemsList = PokemonController.getItemsList;
 const getItem = PokemonController.getItem;
 const getManyItems = PokemonController.getManyItems;
 
+const getRegionsList = PokemonController.getRegionsList;
+const getRegionLocations = PokemonController.getRegionLocations;
+const getLocation = PokemonController.getLocation;
+
 const resolvers = {
     Query: {
         getUser,
@@ -158,7 +190,10 @@ const resolvers = {
         getItemsList,
         getItem,
         getManyItems,
-        getAllFavorites
+        getAllFavorites,
+        getRegionsList,
+        getRegionLocations,
+        getLocation,
     },
     Mutation: {
         logInUser,

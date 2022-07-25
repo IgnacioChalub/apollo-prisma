@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Images, Item, ItemIdentifiers, Pokemon, PokemonIdentifiers, Sprites} from "../models/pokemon/pokemon.entities";
+import { Images, Item, ItemIdentifiers, Location, LocationName, Pokemon, PokemonIdentifiers, RegionName, Sprites} from "../models/pokemon/pokemon.entities";
 
 export class PokemonRepository {
     
@@ -123,5 +123,22 @@ export class PokemonRepository {
         return items;
     }
 
+    static async getRegionsList(): Promise<RegionName[]> {
+        const url = "https://pokeapi.co/api/v2/region/";  
+        const response = await axios.get(url);
+        return <RegionName[]>response.data.results;
+    }
+
+    static async getRegionLocations(regionName: string): Promise<LocationName[]> {
+        const url = "https://pokeapi.co/api/v2/region/" + regionName + "";  
+        const response = await axios.get(url).catch( (error) => {throw new Error('Region not found')});
+        return <LocationName[]>response.data.locations;
+    }
+
+    static async getLocation(locationName: string): Promise<Location> {
+        const url = "https://pokeapi.co/api/v2/location/" + locationName + "";
+        const response = await axios.get(url).catch( (error) => {throw new Error('Location not found')});
+        return <Location>response.data;
+    }
 
 }

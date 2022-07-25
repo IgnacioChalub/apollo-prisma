@@ -1,4 +1,4 @@
-import { Images, Item, ItemIdentifiers, Pokemon, PokemonIdentifiers } from "../models/pokemon/pokemon.entities";
+import { Images, Item, ItemIdentifiers, Location, LocationName, Pokemon, PokemonIdentifiers, RegionName } from "../models/pokemon/pokemon.entities";
 import { JwtService } from "../repository/jwt.service";
 import { PokemonService } from "../service/pokemon.service";
 
@@ -49,6 +49,19 @@ export class PokemonController {
         return await PokemonService.getManyItems(args.input.offset, args.input.limit);        
     }
 
+    static async getRegionsList(_parent: any, args: any, context: any, _info: any): Promise<RegionName[]> {
+        JwtService.validateToken(context.token);
+        return await PokemonService.getRegionsList();        
+    }
 
+    static async getRegionLocations(_parent: any, args: any, context: any, _info: any): Promise<LocationName[]> {
+        JwtService.validateToken(context.token);
+        return await PokemonService.getRegionLocations(args.input.name);
+    }
+
+static async getLocation(_parent: any, args: any, context: any, _info: any): Promise<Location> {
+        JwtService.validateToken(context.token);
+        return await PokemonService.getLocation(args.input.name);
+    }
 
 }
