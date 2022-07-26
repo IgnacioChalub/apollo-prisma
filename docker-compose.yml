@@ -4,7 +4,8 @@ services:
     image: ignaciochalub/pokeapi-graphql
     ports: 
       - 4000:4000
-    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/pokeapi-graphql
     depends_on:
       - database
   database:
