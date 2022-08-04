@@ -10,7 +10,6 @@ export class UserService {
 
     static async create(createUserDto: CreateUserDto): Promise<User> {
         const encryptedPassword = EncrypterService.encrypt(createUserDto.password);
-        console.log(encryptedPassword)
         return await UserRepository.create(createUserDto, encryptedPassword);
     }
 
