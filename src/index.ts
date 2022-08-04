@@ -205,6 +205,7 @@ const resolvers = {
 const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
     csrfPrevention: true,
     cache: 'bounded',
     context: ({ req }) => {
@@ -213,6 +214,6 @@ const server = new ApolloServer({
     },
   });
   
-server.listen({ port: process.env.PORT}).then(({ url }) => {
+server.listen({ port: process.env.PORT }).then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
