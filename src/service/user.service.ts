@@ -19,7 +19,6 @@ export class UserService {
         if(!EncrypterService.compare(password, user.password)) throw new Error("Invalid credentials");
 
         const token =  JwtService.login(user.id);
-        
         return {
             token,
             user
