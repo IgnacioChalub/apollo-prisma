@@ -6,13 +6,13 @@ export class UserRepository {
 
     static db = new PrismaClient();
 
-    static async create(createUserDto: CreateUserDto): Promise<User> {
+    static async create(createUserDto: CreateUserDto, encryptedPassword: string): Promise<User> {
         try {
             return await UserRepository.db.user.create({
                 data: {
                     username: createUserDto.username,
                     email: createUserDto.email,
-                    password: createUserDto.password
+                    password: encryptedPassword
                 },
               })
         } catch (e) {
