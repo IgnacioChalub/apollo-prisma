@@ -9,14 +9,15 @@ import { UserRepository } from "../repository/user.repository";
 export class UserService {
 
     static async create(createUserDto: CreateUserDto): Promise<User> {
-        const encryptedPassword = EncrypterService.encrypt(createUserDto.password)
+        const encryptedPassword = EncrypterService.encrypt(createUserDto.password);
+        console.log(encryptedPassword)
         return await UserRepository.create(createUserDto, encryptedPassword);
     }
 
     static async logIn(username: string, password: string): Promise<any> {
         
         const user = await UserRepository.findByUsername(username);
-        if(!EncrypterService.compare(password, user.password)) throw new Error("Invalid credentials");
+        if(! await EncrypterService.compare(password, user.password)) throw new Error("Invalid credentials");
 
         const token =  JwtService.login(user.id);
         return {
