@@ -4,6 +4,7 @@ import { User } from "../models/user/user.entity";
 import { EncrypterService } from "../repository/encrypter.service";
 import { JwtService } from "../repository/jwt.service";
 import { PokemonRepository } from "../repository/pokemon.repository";
+import { S3Service } from "../repository/s3.service";
 import { UserRepository } from "../repository/user.repository";
 
 export class UserService {
@@ -38,4 +39,14 @@ export class UserService {
         return await UserRepository.getAllFavorites(id);
     }
 
+    static async addProfilePictureGetUrl(id: string): Promise<string> {
+        await UserRepository.setProfilePicture(id); 
+        return await S3Service.getPutUrl(id);
+    }
+
+    static async getProfilePictureUrl(id: string): Promise<string> {
+        const user: User = await UserRepository.find(id);
+        if(!user.hasProfilePicture) throw Error("User does not have a profile picture");
+        return await S3Service.getUrl(id);
+    }
 }

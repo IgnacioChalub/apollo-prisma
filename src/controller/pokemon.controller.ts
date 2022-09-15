@@ -59,7 +59,7 @@ export class PokemonController {
         return await PokemonService.getRegionLocations(args.input.name);
     }
 
-static async getLocation(_parent: any, args: any, context: any, _info: any): Promise<Location> {
+    static async getLocation(_parent: any, args: any, context: any, _info: any): Promise<Location> {
         JwtService.validateToken(context.token);
         return await PokemonService.getLocation(args.input.name);
     }

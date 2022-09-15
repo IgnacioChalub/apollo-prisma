@@ -34,4 +34,16 @@ export class UserController {
         return await UserService.getAllFavorites(id);
     }
 
+    static async addProfilePictureGetUrl(_parent: any, _args: any, context: any, _info: any): Promise<{url: string}> {
+        const id = JwtService.validateToken(context.token);
+        const url = await UserService.addProfilePictureGetUrl(id);
+        return {url: url};
+    } 
+
+    static async getProfilePictureUrl(_parent: any, _args: any, context: any, _info: any): Promise<{url: string}> {
+        const id = JwtService.validateToken(context.token);
+        const url = await UserService.getProfilePictureUrl(id);
+        return {url: url};
+    }
+
 }

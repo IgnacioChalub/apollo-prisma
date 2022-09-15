@@ -6,6 +6,8 @@ const typeDefs = gql`
 
   type Query {
     getUser: User
+    addProfilePictureGetUrl: Url 
+    getProfilePictureUrl: Url
     getPokemonsList(input: GetManyInput): [PokemonIdentifiers]
     getPokemon(input: GetPokemonInput): Pokemon
     getPokemonWithImages(input: GetPokemonInput): PokemonWithImages
@@ -25,6 +27,10 @@ const typeDefs = gql`
     createUser(input: CreateUserInput): User
     logInUser(input: LogInUserInput): LogInUserResponse
     addFavoritePokemon(input: AddFavoritePokemonInput): String
+  }
+
+  type Url {
+    url: String
   }
 
   input CreateUserInput {
@@ -159,6 +165,8 @@ const typeDefs = gql`
 const createUser = UserController.create;
 const getUser = UserController.getUser;
 const logInUser = UserController.logIn;
+const addProfilePictureGetUrl = UserController.addProfilePictureGetUrl;
+const getProfilePictureUrl = UserController.getProfilePictureUrl;
 
 const addFavoritePokemon = UserController.addFavoritePokemon;
 const getAllFavorites = UserController.getAllFavorites;
@@ -181,6 +189,8 @@ const getLocation = PokemonController.getLocation;
 const resolvers = {
     Query: {
         getUser,
+        addProfilePictureGetUrl,
+        getProfilePictureUrl,
         getPokemonsList,
         getPokemon,
         getPokemonWithImages,

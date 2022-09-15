@@ -74,4 +74,14 @@ export class UserRepository {
         })
         return list;
     }
+
+    static async setProfilePicture(id: string): Promise<void> {
+        await UserRepository.db.user.update({
+            where: {id: id},
+            data: {
+                hasProfilePicture: true
+            }
+        })
+    }
+
 }

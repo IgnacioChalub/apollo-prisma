@@ -3,6 +3,7 @@ export class User {
     username: string;
     email: string;
     password: string;
+    hasProfilePicture: boolean;
 }
 
 export class FavoritePokemon {
