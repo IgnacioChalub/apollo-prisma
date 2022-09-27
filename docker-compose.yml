@@ -3,7 +3,7 @@ services:
     container_name: pokeapi
     image: ignaciochalub/pokeapi-graphql
     ports: 
-      - 4000:4000
+      - 8080:8080
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/pokeapi-graphql
     depends_on:
